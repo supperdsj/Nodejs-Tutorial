@@ -35,6 +35,16 @@ let getNote = (title) => {
     console.log('Getting note', title);
 };
 let removeNote = (title) => {
-    console.log('Removing note', title);
+    let notes=fetchNotes();
+    let notesRemoved=_.remove(notes,(note)=>{
+        return note.title===title;
+    });
+    if(notesRemoved.length===0){
+        return undefined;
+    }else{
+        saveNotes(notes);
+        return notesRemoved[0];
+    }
+
 };
 module.exports = {addNote, getAll, getNote, removeNote};
