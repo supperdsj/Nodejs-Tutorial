@@ -10,29 +10,29 @@ const argv = yargs.argv;
 const command = argv._[0];
 
 if (command === 'add') {
-    let note=notes.addNote(argv.title, argv.body);
-    if(note){
+    let note = notes.addNote(argv.title, argv.body);
+    if (note) {
         console.log('Note was created');
-        console.log(`Title:${note.title}`);
-    }else{
+        notes.logNote(note);
+    } else {
         console.log('Note title taken');
     }
 } else if (command === 'list') {
-    notes.getAll();
+    console.log(notes.getAll());
 } else if (command === 'read') {
-    let note=notes.getNote(argv.title);
-    if(note){
+    let note = notes.getNote(argv.title);
+    if (note) {
         console.log('Note was found');
-        console.log(`Title:${note.title}`);
-    }else{
+        notes.logNote(note);
+    } else {
         console.log('Note title not found');
     }
 } else if (command === 'remove') {
-    let note=notes.removeNote(argv.title);
-    if(note){
+    let note = notes.removeNote(argv.title);
+    if (note) {
         console.log('Note was removed');
-        console.log(`Title:${note.title}`);
-    }else{
+        notes.logNote(note);
+    } else {
         console.log('Note title not found');
     }
 } else {

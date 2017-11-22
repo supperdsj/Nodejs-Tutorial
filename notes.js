@@ -29,10 +29,16 @@ let addNote = (title, body) => {
     }
 };
 let getAll = () => {
+    return fetchNotes();
 };
 let getNote = (title) => {
     let notes = fetchNotes();
     return _.find(notes, (note) => note.title === title);
+};
+let logNote = (note) => {
+    console.log('-----------------------');
+    console.log(`Title:${note.title}`);
+    console.log(`Body:${note.body}`);
 };
 let removeNote = (title) => {
     let notes = fetchNotes();
@@ -47,4 +53,4 @@ let removeNote = (title) => {
     }
 
 };
-module.exports = {addNote, getAll, getNote, removeNote};
+module.exports = {addNote, getAll, getNote, removeNote,logNote};
