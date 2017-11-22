@@ -29,19 +29,19 @@ let addNote = (title, body) => {
     }
 };
 let getAll = () => {
-    console.log('Getting all notes');
 };
 let getNote = (title) => {
-    console.log('Getting note', title);
+    let notes = fetchNotes();
+    return _.find(notes, (note) => note.title === title);
 };
 let removeNote = (title) => {
-    let notes=fetchNotes();
-    let notesRemoved=_.remove(notes,(note)=>{
-        return note.title===title;
+    let notes = fetchNotes();
+    let notesRemoved = _.remove(notes, (note) => {
+        return note.title === title;
     });
-    if(notesRemoved.length===0){
+    if (notesRemoved.length === 0) {
         return undefined;
-    }else{
+    } else {
         saveNotes(notes);
         return notesRemoved[0];
     }

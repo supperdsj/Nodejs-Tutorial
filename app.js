@@ -20,7 +20,13 @@ if (command === 'add') {
 } else if (command === 'list') {
     notes.getAll();
 } else if (command === 'read') {
-    notes.getNote(argv.title);
+    let note=notes.getNote(argv.title);
+    if(note){
+        console.log('Note was found');
+        console.log(`Title:${note.title}`);
+    }else{
+        console.log('Note title not found');
+    }
 } else if (command === 'remove') {
     let note=notes.removeNote(argv.title);
     if(note){
