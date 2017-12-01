@@ -1,7 +1,8 @@
 const express = require('express');
 const hbs = require('hbs');
-const fs =require('fs');
+const fs = require('fs');
 
+let port = process.env.PORT || 3000;
 let app = express();
 
 hbs.registerPartials(__dirname + '/views/partials');
@@ -15,7 +16,7 @@ hbs.registerHelper('screamIt', (text) => {
 
 app.set('view engine', 'hbs');
 
-app.use((req,res,next)=>{
+app.use((req, res, next) => {
     res.render('main.hbs');
 });
 
@@ -25,8 +26,8 @@ app.use((req, res, next) => {
     let now = new Date().toString();
     let log = `${now}:${req.method} ${req.url}`;
     console.log(log);
-    fs.appendFile('server.log',log+'\n',(err)=>{
-        if(err){
+    fs.appendFile('server.log', log + '\n', (err) => {
+        if (err) {
             console.log('unable to append to server.log')
         }
     });
@@ -49,6 +50,6 @@ app.get('/about', (req, res) => {
         pageTitle: 'About Page',
     });
 });
-app.listen(3000, () => {
-    console.log('server is up to port 3000');
+app.listen(port, () => {
+    console.log(`server is up to port ${port}`);
 });
