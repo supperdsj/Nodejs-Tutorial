@@ -1,8 +1,9 @@
 const request = require('request');
+const axios = require('axios');
 
-const apiKey='AIzaSyAkeUKSuiRT2kANDXoQ1J56bJE28EnMo7w';
+const apiKey = 'AIzaSyAkeUKSuiRT2kANDXoQ1J56bJE28EnMo7w';
 
-let geocodeAddress = (address, callback) => {
+const geocodeAddress = (address, callback) => {
     request({
         url: `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${apiKey}`,
         json: true
@@ -23,4 +24,15 @@ let geocodeAddress = (address, callback) => {
         }
     });
 };
-module.exports.geocodeAddress = geocodeAddress;
+const geocodeAddressPromise = (address) => {
+    return new Promise((resolve, reject) => {
+        geocodeAddress(address, (err, result) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(result);
+            }
+        });
+    });
+};
+module.exports = {geocodeAddress, geocodeAddressPromise};

@@ -8,12 +8,24 @@ const getWeather = (lat, lng, callback) => {
         json: true
     }, (err, resp, body) => {
         if (!err && resp.statusCode === 200) {
-            // console.log(body.currently.temperature);
-            callback(null, {temperature:body.currently.temperature,apparentTemperature:body.currently.apparentTemperature});
+            callback(null, {
+                temperature: body.currently.temperature,
+                apparentTemperature: body.currently.apparentTemperature
+            });
         } else {
-            // console.log('unable to fetch weather');
             callback(err, null);
         }
     });
 };
-module.exports.getWeather = getWeather;
+const getWeatherPromise = (city) => {
+    return new Promise((resolve, reject) => {
+        getWeather(city.lat,city.lng, (err, result) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(Object.assign(city,result));
+            }
+        });
+    });
+};
+module.exports = {getWeather, getWeatherPromise};
