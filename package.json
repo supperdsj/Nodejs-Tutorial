@@ -1,0 +1,29 @@
+{
+  "name": "nodejs-tutorial",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "expect": "^1.20.2",
+    "express": "^4.16.2",
+    "mongodb": "^3.0.0-rc0",
+    "rewire": "^3.0.2",
+    "supertest": "^3.0.0"
+  },
+  "devDependencies": {
+    "mocha": "^4.0.1"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/supperdsj/Nodejs-Tutorial.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/supperdsj/Nodejs-Tutorial/issues"
+  },
+  "homepage": "https://github.com/supperdsj/Nodejs-Tutorial#readme"
+}
