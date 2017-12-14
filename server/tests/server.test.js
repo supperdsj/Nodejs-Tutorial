@@ -1,15 +1,15 @@
 const expect = require('expect');
 const request = require('supertest');
-const {ObjectID}=require('mongodb');
+const {ObjectID} = require('mongodb');
 
 const {app} = require('./../server');
 const {Todo} = require('./../models/todo');
 
 const todos = [{
-    _id:new ObjectID(),
+    _id: new ObjectID(),
     text: 'First test todo'
 }, {
-    _id:new ObjectID(),
+    _id: new ObjectID(),
     text: 'Second test todo'
 }];
 
@@ -74,24 +74,57 @@ describe('GET /todos', () => {
 });
 
 describe('GET /todos/:id', () => {
-    it('should return todo doc by id',(done)=>{
+    it('should return todo doc by id', (done) => {
         request(app)
             .get(`/todos/${todos[0]._id.toString()}`)
             .expect(200)
-            .expect((res)=>{
+            .expect((res) => {
                 expect(res.body.todo.text).toBe(todos[0].text);
             })
             .end(done);
     });
-    it('should return 404 with invalid id',(done)=>{
+    it('should return 404 with invalid id', (done) => {
         request(app)
             .get(`/todos/123`)
             .expect(404)
             .end(done);
     });
-    it('should return 404 with wrong id',(done)=>{
+    it('should return 404 with wrong id', (done) => {
         request(app)
             .get(`/todos/${(new ObjectID()).toString()}`)
+            .expect(404)
+            .end(done);
+    });
+});
+describe('DEL /todos/:id', () => {
+    it('should remove todo doc by id', (done) => {
+        request(app)
+            .delete(`/todos/${todos[0]._id.toString()}`)
+            .expect(200)
+            .expect((res) => {
+                expect(res.body.todo.text).toBe(todos[0].text);
+            })
+            .end((err, res) => {
+                if (err) {
+                    return done(err);
+                } else {
+                    Todo.findById(todos[0]._id.toString()).then((todo) => {
+                        console.log(todo);
+                        expect(todo).toNotExist();
+                        done();
+                    }).catch((e) => done(e));
+                }
+            });
+    });
+    it('should return 404 with invalid id', (done) => {
+        request(app)
+            .delete(`/todos/123`)
+            .expect(404)
+            .end(done);
+    });
+    it('should return 404 with wrong id', (done) => {
+        request(app)
+            .delete(`/todos/${(new ObjectID()).toString()}`)
             .expect(404)
             .end(done);
     });
