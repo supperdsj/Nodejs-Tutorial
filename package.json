@@ -9,6 +9,7 @@
     "lodash": "^4.17.4",
     "mongodb": "^3.0.0-rc0",
     "mongoose": "^4.13.7",
+    "net": "^1.0.2",
     "opbeat": "^4.16.0",
     "rewire": "^3.0.2",
     "validator": "^9.2.0"
