@@ -89,7 +89,9 @@ app.patch('/todos/:id', (req, res) => {
     });
 });
 
-
+app.get('/error',(req,res)=>{
+    throw 'test Error';
+})
 app.listen(port, () => {
     console.log(`Started on port ${port}`);
 });
