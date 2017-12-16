@@ -1,4 +1,4 @@
-if (env === production){
+if (process.env.NODE_ENV === production){
     const opbeat = require('opbeat').start();
 }
 
