@@ -93,6 +93,10 @@ app.get('/error',(req,res)=>{
     throw 'test Error';
 });
 
+app.get('/wakeup',(req,res)=>{
+    res.send('I\'m wake!');
+});
+
 app.listen(port, () => {
     console.log(`Started on port ${port}`);
 });
