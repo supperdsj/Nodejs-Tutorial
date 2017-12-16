@@ -1,7 +1,5 @@
 if (process.env.NODE_ENV === 'production'){
     const opbeat = require('opbeat').start();
-
-    const nr = require('newrelic');
 }
 
 require('./config/config');
