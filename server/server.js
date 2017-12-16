@@ -97,5 +97,6 @@ app.listen(port, () => {
     console.log(`Started on port ${port}`);
 });
 
+require('./wakeup');
 
 module.exports = {app};
