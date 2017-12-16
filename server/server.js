@@ -1,3 +1,7 @@
+if (env === production){
+    const opbeat = require('opbeat').start();
+}
+
 require('./config/config');
 
 const express = require('express');
