@@ -1,12 +1,5 @@
 if (process.env.NODE_ENV === 'production'){
     const opbeat = require('opbeat').start();
-    var net    = require('net');
-    var apikey = process.env.HOSTEDGRAPHITE_APIKEY;
-
-    var socket = net.createConnection(2003, "carbon.hostedgraphite.com", function() {
-        socket.write(apikey + ".request.time 1444\n");
-        socket.end();
-    });
 }
 
 require('./config/config');
