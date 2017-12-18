@@ -211,7 +211,7 @@ describe('POST /users/me', () => {
     it('should not create a user with a exist email', (done) => {
         request(app)
             .post('/users')
-            .send({email:users[0].email, password:users[0].password})
+            .send({email: users[0].email, password: users[0].password})
             .expect(400)
             .end(done);
     });
@@ -231,5 +231,39 @@ describe('POST /users/me', () => {
                     done();
                 });
             });
+    });
+});
+describe('POST /users/login', () => {
+    it('should login user and return auth token', (done) => {
+        request(app)
+            .post('/users/login')
+            .send({email: users[1].email, password: users[1].password})
+            .expect(200)
+            .expect((res) => {
+                expect(res.headers['x-auth']).toExist();
+                expect(res.body._id).toExist();
+                expect(res.body.email).toBe(users[1].email);
+            })
+            .end((err, res) => {
+                if (err) {
+                    done(err);
+                }
+                User.findById(users[1]._id).then((user) => {
+                    expect(user.tokens.filter((t)=>t.access==='auth')[0].token).toBe(res.headers['x-auth']);
+                    done();
+                }).catch((e) => {
+                    done(e);
+                });
+            });
+    });
+    it('should reject invalid login', (done) => {
+        request(app)
+            .post('/users/login')
+            .send({email: users[0].email, password: 'wrone pwd'})
+            .expect(401)
+            .expect((res) => {
+                expect(res.headers['x-auth']).toNotExist();
+            })
+            .end(done);
     });
 });

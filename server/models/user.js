@@ -50,9 +50,8 @@ UserSchema.methods.generateAuthToken = function () {
     const user = this;
     const access = 'auth';
     const token = jwt.sign({_id: user._id.toString(), access}, jwtSec).toString();
-
-    user.tokens.push({access, token});
-
+    const fToken = user.tokens.filter((token) => token.access === access);
+    user.tokens = [{access, token}];
     return user.save().then((user) => {
         return token;
     });
@@ -74,18 +73,18 @@ UserSchema.statics.findByToken = function (token) {
         'tokens.access': 'auth'
     });
 };
-UserSchema.statics.findByCredentials = function (email,password) {
+UserSchema.statics.findByCredentials = function (email, password) {
     const User = this;
 
-    return User.findOne({email}).then((user)=>{
-        if(!user){
+    return User.findOne({email}).then((user) => {
+        if (!user) {
             return Promise.reject();
         }
-        return new Promise((resolve,reject)=>{
-            bcrypt.compare(password,user.password,(err,res)=>{
-                if(res){
+        return new Promise((resolve, reject) => {
+            bcrypt.compare(password, user.password, (err, res) => {
+                if (res) {
                     resolve(user);
-                }else{
+                } else {
                     reject();
                 }
             });
@@ -111,4 +110,4 @@ UserSchema.pre('save', function (next) {
 const User = mongoose.model('User', UserSchema);
 
 
-module.exports = {User,jwtSec};
+module.exports = {User, jwtSec};
