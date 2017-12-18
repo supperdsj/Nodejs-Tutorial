@@ -1,4 +1,4 @@
-if (process.env.NODE_ENV === 'production'){
+if (process.env.NODE_ENV === 'production') {
     const opbeat = require('opbeat').start();
 }
 
@@ -12,7 +12,9 @@ const _ = require('lodash');
 const {mongoose} = require('./db/mongoose');
 const {Todo} = require('./models/todo');
 const {User} = require('./models/user');
+const {authenticate}=require('./middleware/authenticate');
 
+console.log(User.findByToken);
 let app = express();
 const port = process.env.PORT || 3000;
 
@@ -85,31 +87,38 @@ app.patch('/todos/:id', (req, res) => {
             res.send({todo});
         }
     }, (err) => {
-        res.status(404).send();
+        res.status(404).send(err);
     });
 });
 
 app.post('/users', (req, res) => {
     const body = _.pick(req.body, ['email', 'password']);
     const user = new User(body);
-    user.save().then((user) => {
-        res.send({user});
-    }).catch((e) => {
-        res.status(400).send(e);
+
+    user.save().then((_user) => {
+        return _user.generateAuthToken();
+    }).then((token) => {
+        res.header('x-auth', token).send(user);
+    }).catch((err) => {
+        err = JSON.parse(JSON.stringify(err));
+        delete  err.op;
+        res.status(400).send(err);
     });
 });
-app.get('/error',(req,res)=>{
-    throw 'test Error';
+
+
+
+app.get('/users/me', authenticate, (req, res) => {
+    res.send(req.user);
 });
 
-app.get('/wakeup',(req,res)=>{
-    res.send('I\'m wake!');
+app.get('/error', (req, res) => {
+    throw 'test Error';
 });
 
 app.listen(port, () => {
     console.log(`Started on port ${port}`);
 });
 
-require('./wakeup');
 
 module.exports = {app};
