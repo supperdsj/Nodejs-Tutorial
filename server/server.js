@@ -1,3 +1,7 @@
+if (process.env.NODE_ENV === 'production'){
+    const opbeat = require('opbeat').start();
+}
+
 require('./config/config');
 
 const express = require('express');
@@ -94,10 +98,18 @@ app.post('/users', (req, res) => {
         res.status(400).send(e);
     });
 });
+app.get('/error',(req,res)=>{
+    throw 'test Error';
+});
+
+app.get('/wakeup',(req,res)=>{
+    res.send('I\'m wake!');
+});
 
 app.listen(port, () => {
     console.log(`Started on port ${port}`);
 });
 
+require('./wakeup');
 
 module.exports = {app};
