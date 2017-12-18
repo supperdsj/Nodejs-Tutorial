@@ -5,6 +5,7 @@ const authenticate = (req, res, next) => {
 
     User.findByToken(token).then((user) => {
         if (!user) {
+            console.log('noUser!!');
             return Promise.reject();
         }
         req.user = user;

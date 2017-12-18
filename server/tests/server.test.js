@@ -17,6 +17,7 @@ describe('POST /todos', () => {
 
         request(app)
             .post('/todos')
+            .set('x-auth', users[0].tokens[0].token)
             .send({text})
             .expect(200)
             .expect((res) => {
@@ -39,6 +40,7 @@ describe('POST /todos', () => {
 
         request(app)
             .post('/todos')
+            .set('x-auth', users[0].tokens[0].token)
             .send({text})
             .expect(400)
             .end((err, res) => {
@@ -58,9 +60,10 @@ describe('GET /todos', () => {
     it('should get all todos', (done) => {
         request(app)
             .get('/todos')
+            .set('x-auth', users[0].tokens[0].token)
             .expect(200)
             .expect((res) => {
-                expect(res.body.todos.length).toBe(2);
+                expect(res.body.todos.length).toBe(1);
             }).end(done);
     });
 });
@@ -69,21 +72,24 @@ describe('GET /todos/:id', () => {
     it('should return todo doc by id', (done) => {
         request(app)
             .get(`/todos/${todos[0]._id.toString()}`)
+            .set('x-auth', users[0].tokens[0].token)
             .expect(200)
             .expect((res) => {
                 expect(res.body.todo.text).toBe(todos[0].text);
             })
             .end(done);
     });
-    it('should return 404 with invalid id', (done) => {
-        request(app)
-            .get(`/todos/123`)
-            .expect(404)
-            .end(done);
-    });
     it('should return 404 with wrong id', (done) => {
         request(app)
             .get(`/todos/${(new ObjectID()).toString()}`)
+            .set('x-auth', users[0].tokens[0].token)
+            .expect(404)
+            .end(done);
+    });
+    it('should return 404 with invalid id', (done) => {
+        request(app)
+            .get(`/todos/123`)
+            .set('x-auth', users[0].tokens[0].token)
             .expect(404)
             .end(done);
     });
@@ -92,6 +98,7 @@ describe('DEL /todos/:id', () => {
     it('should remove todo doc by id', (done) => {
         request(app)
             .delete(`/todos/${todos[0]._id.toString()}`)
+            .set('x-auth', users[0].tokens[0].token)
             .expect(200)
             .expect((res) => {
                 expect(res.body.todo.text).toBe(todos[0].text);
@@ -110,12 +117,14 @@ describe('DEL /todos/:id', () => {
     it('should return 404 with invalid id', (done) => {
         request(app)
             .delete(`/todos/123`)
+            .set('x-auth', users[0].tokens[0].token)
             .expect(404)
             .end(done);
     });
     it('should return 404 with wrong id', (done) => {
         request(app)
             .delete(`/todos/${(new ObjectID()).toString()}`)
+            .set('x-auth', users[0].tokens[0].token)
             .expect(404)
             .end(done);
     });
@@ -124,6 +133,7 @@ describe('PATCH /todos/:id', () => {
     it('should update todo doc by id to completed', (done) => {
         request(app)
             .patch(`/todos/${todos[0]._id.toString()}`)
+            .set('x-auth', users[0].tokens[0].token)
             .send({
                 completed: true,
                 text: 'make it completed'
@@ -139,6 +149,7 @@ describe('PATCH /todos/:id', () => {
     it('should update todo doc by id to uncompleted', (done) => {
         request(app)
             .patch(`/todos/${todos[0]._id.toString()}`)
+            .set('x-auth', users[0].tokens[0].token)
             .send({
                 completed: false,
                 text: 'make it uncompleted'
@@ -154,12 +165,14 @@ describe('PATCH /todos/:id', () => {
     it('should return 404 with invalid id', (done) => {
         request(app)
             .patch(`/todos/123`)
+            .set('x-auth', users[0].tokens[0].token)
             .expect(404)
             .end(done);
     });
     it('should return 404 with wrong id', (done) => {
         request(app)
             .patch(`/todos/${(new ObjectID()).toString()}`)
+            .set('x-auth', users[0].tokens[0].token)
             .expect(404)
             .end(done);
     });
