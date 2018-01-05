@@ -5,22 +5,23 @@
   "main": "index.js",
   "dependencies": {
     "body-parser": "^1.18.2",
-    "expect": "^1.20.2",
     "express": "^4.16.2",
     "lodash": "^4.17.4",
     "mongodb": "^3.0.0-rc0",
     "mongoose": "^4.13.7",
-    "nodemon": "^1.12.5",
     "rewire": "^3.0.2",
     "socket.io": "^2.0.4",
     "supertest": "^3.0.0"
   },
   "devDependencies": {
-    "mocha": "^4.0.1"
+    "expect": "^1.20.2",
+    "mocha": "^4.0.1",
+    "nodemon": "^1.14.7"
   },
   "scripts": {
     "start": "node server/server.js",
-    "test": "mocha"
+    "test": "mocha server/**/*.test.js",
+    "test-watch": "nodemon --exec 'npm test'"
   },
   "engines": {
     "node": "8.9.3"
