@@ -9,10 +9,12 @@ socket.on('disconnect', function () {
 });
 
 socket.on('newMessage', function (message) {
-    $('#messages').append('<li>' + message.from + ':' + message.text + '</li>');
+    var formattedTime = moment(message.createAt).format('h:mm a');
+    $('#messages').append('<li>' + message.from + ' [' + formattedTime + '] : ' + message.text + '</li>');
 });
 socket.on('newLocation', function (message) {
-    $('#messages').append('<li>' + message.from + ':'+'<a target="_blank" href="'+message.url+'">' + 'shared location' + '</a></li>');
+    var formattedTime = moment(message.createAt).format('h:mm a');
+    $('#messages').append('<li>' + message.from + ' [' + formattedTime + '] : ' + '<a target="_blank" href="' + message.url + '">' + 'shared location' + '</a></li>');
 });
 
 $('#message-form').on('submit', function (e) {
@@ -33,13 +35,13 @@ $('#share-location').on('click', function (e) {
     if (!navigator.geolocation) {
         return alert('geolocation not support by your browser.');
     }
-    $('#share-location').attr('disabled','disabled').text('Sharing location...');
+    $('#share-location').attr('disabled', 'disabled').text('Sharing location...');
     navigator.geolocation.getCurrentPosition(function (position) {
         console.log(position);
-        socket.emit('createLocation',{
+        socket.emit('createLocation', {
             from: 'User',
-            latitude:position.coords.latitude,
-            longitude:position.coords.longitude
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude
         });
         $('#share-location').removeAttr('disabled').text('Share location');
     }, function (error) {
