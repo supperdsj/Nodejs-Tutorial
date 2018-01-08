@@ -17,6 +17,16 @@ function scrollToBottom() {
 
 socket.on('connect', function () {
     console.log('Connect to server');
+    var params = $.deparam(window.location.search);
+
+    socket.emit('join', params, function (err) {
+        if(err){
+            alert(err);
+            window.location.href='/';
+        }else{
+
+        }
+    });
 });
 
 socket.on('disconnect', function () {
@@ -52,12 +62,12 @@ socket.on('newLocation', function (message) {
 $('#message-form').on('submit', function (e) {
     e.preventDefault();
     // if ($('input[name=message]').val().trim() !== '') {
-        socket.emit('createMessage', {
-            from: 'User',
-            text: $('input[name=message]').val()
-        }, function (str) {
-            $('input[name=message]').val('');
-        });
+    socket.emit('createMessage', {
+        from: 'User',
+        text: $('input[name=message]').val()
+    }, function (str) {
+        $('input[name=message]').val('');
+    });
     // } else {
     //     alert('please input some message');
     // }
