@@ -20,10 +20,10 @@ socket.on('connect', function () {
     var params = $.deparam(window.location.search);
 
     socket.emit('join', params, function (err) {
-        if(err){
+        if (err) {
             alert(err);
-            window.location.href='/';
-        }else{
+            window.location.href = '/';
+        } else {
 
         }
     });
@@ -31,6 +31,17 @@ socket.on('connect', function () {
 
 socket.on('disconnect', function () {
     console.log('Disconnect from server');
+});
+
+socket.on('updateUserList', function (users) {
+    const ol = $('<ol></ol>');
+    users.forEach(function (user) {
+        console.log(user);
+        ol.append($('<li></li>').text(user));
+    });
+    console.log(ol);
+    $('#users').html(ol);
+    console.log('user list', users);
 });
 
 socket.on('newMessage', function (message) {
